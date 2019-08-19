@@ -1,0 +1,2 @@
+Create gif:
+    ffmpeg -r 30 -f image2 -s 1000x1000 -i %03d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p Gravity-2.mp4
