@@ -25,6 +25,6 @@ particles = [
 
 For example, the following 4 particle simulation was created by defining the particles:
 
-![Alt Text]("4 Particle Simulation/Gravity-4_particles.gif")
+![Alt Text](4_Particle_Simulation/Gravity-4_particles.gif)
  
 
