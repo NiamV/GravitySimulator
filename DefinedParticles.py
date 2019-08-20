@@ -1,6 +1,7 @@
 import random
 import math
 from PIL import Image, ImageDraw
+import sys
 
 class Particle:
     #Position and velocity are lists of length 2
@@ -11,7 +12,12 @@ class Particle:
         self.vx = velocity[0]
         self.vy = velocity[1]
 
-particles = [Particle(1,[random.randint(250,750),random.randint(250,750)],[0,0]) for i in range(300)]
+particles = [
+    Particle(1, [250, 500], [0,-1000]),
+    Particle(1, [750, 500], [0,1000]),
+    Particle(1, [500, 250], [1000,0]),
+    Particle(1, [500, 750], [-1000,0])
+]
 
 def TotalMass(objects):
     totalMass = 0
@@ -45,23 +51,25 @@ currentImage = Image.new("RGBA", (1000,1000), color="#000000")
 drawImage = ImageDraw.Draw(currentImage)
 dt = float(1)/float(1000)
 
+print(" ")
+
 for i in range(1,1000):
     drawImage.rectangle([(0, 0), (1001, 1001)], fill = "#000000")
 
-    for j in range(1, len(particles)):
+    for j in range(0, len(particles)):
         accn = [0,0]
-        for k in range(1,len(particles)):
+        for k in range(0,len(particles)):
             if j != k:
                 delta_x = particles[k].x - particles[j].x
                 delta_y = particles[k].y - particles[j].y
                 delta_r = math.sqrt( delta_x ** 2 + delta_y ** 2 )
                 try:
-                    accn[0] += float(100000 * (particles[k].m) * delta_x) / float(delta_r ** 3)
+                    accn[0] += float(1000000000 * (particles[k].m) * delta_x) / float(delta_r ** 3)
                 except:
                     accn[0] += 0
 
                 try:
-                    accn[1] += float(100000 * (particles[k].m) * delta_y) / float(delta_r ** 3)
+                    accn[1] += float(1000000000 * (particles[k].m) * delta_y) / float(delta_r ** 3)
                 except:
                     accn[1] += 0
 
@@ -74,8 +82,8 @@ for i in range(1,1000):
         particles[j].y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
         particles[j].vy = newVelocity(particles[j].vy, y_accn, dt)
         
-        # drawImage.ellipse([(particles[j].x - 2, particles[j].y - 2),(particles[j].x + 2, particles[j].y + 2)], fill = "#FFFFFF", outline = "#FFFFFF")
-        drawImage.point((particles[j].x, particles[j].y), fill = "#FFFFFF")
+        drawImage.ellipse([(particles[j].x - 2, particles[j].y - 2),(particles[j].x + 2, particles[j].y + 2)], fill = "#FFFFFF", outline = "#FFFFFF")
+        # drawImage.point((particles[j].x, particles[j].y), fill = "#FFFFFF")
         
         if abs(particles[j].x - 500) > 600 or abs(particles[j].y - 500) > 600:
             # particles[j].x = random.randint(250,750)
@@ -89,7 +97,9 @@ for i in range(1,1000):
 
     
     frames.append(currentImage)
-    currentImage.save("Frames3/" + "{:03d}".format(i) + ".png", format = "PNG")
+    currentImage.save("Frames4/" + "{:03d}".format(i) + ".png", format = "PNG")
+    sys.stdout.write("\033[F")
     print(i)
     
 # frames[0].save('Gravity.gif', format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
+
