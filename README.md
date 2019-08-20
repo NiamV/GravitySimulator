@@ -25,6 +25,6 @@ particles = [
 
 For example, the following 4 particle simulation was created by defining the particles:
 
-![Alt Text](https://github.com/NiamV/GravitySimulator/blob/master/4%20Particle%20Simulation/Gravity-4.mp4)
+![Alt Text](https://github.com/NiamV/GravitySimulator/blob/master/4%20Particle%20Simulation/Gravity.gif)
 
 
