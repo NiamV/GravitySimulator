@@ -4,6 +4,12 @@ This is a python program that simulates gravity between many particles. It outpu
 
 ## Specifying the Particles
 
+The particles have 3 parameters:
+
+* Mass - a float greater than 0
+* Position - an array with two floats
+* Velocity - an array with two floats
+
 There are two ways of specifying the initial mass, position and velocity of the particles in the simulation:
 
 ### Defined Particles
@@ -16,5 +22,9 @@ particles = [
     # Repeat for all of the particles
 ]
 ```
+
+For example, the following 4 particle simulation was created by defining the particles:
+
+![Alt Text](https://github.com/NiamV/GravitySimulator/blob/master/4%20Particle%20Simulation/Gravity-4.mp4)
 
 
