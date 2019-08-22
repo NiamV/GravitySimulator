@@ -13,10 +13,10 @@ class Particle:
         self.vy = velocity[1]
 
 particles = [
-    Particle(1, [250, 500], [0,-1000]),
-    Particle(1, [750, 500], [0,1000]),
-    Particle(1, [500, 250], [1000,0]),
-    Particle(1, [500, 750], [-1000,0])
+    Particle(1, [400, 500], [0,-2000]),
+    Particle(1, [600, 500], [0,2000]),
+    Particle(1, [500, 400], [2000,0]),
+    Particle(1, [500, 600], [-2000,0])
 ]
 
 def TotalMass(objects):
@@ -56,6 +56,8 @@ print(" ")
 for i in range(1,1000):
     drawImage.rectangle([(0, 0), (1001, 1001)], fill = "#000000")
 
+    newParticles = []
+
     for j in range(0, len(particles)):
         accn = [0,0]
         for k in range(0,len(particles)):
@@ -75,12 +77,18 @@ for i in range(1,1000):
 
         
         x_accn = accn[0]
-        particles[j].x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
-        particles[j].vx = newVelocity(particles[j].vx, x_accn, dt)
+        particleNew_x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
+        particleNew_vx = newVelocity(particles[j].vx, x_accn, dt)
         
         y_accn = accn[1]
-        particles[j].y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
-        particles[j].vy = newVelocity(particles[j].vy, y_accn, dt)
+        particleNew_y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
+        particleNew_vy = newVelocity(particles[j].vy, y_accn, dt)
+
+        newParticles.append(Particle(
+            particles[j].m, 
+            [particleNew_x, particleNew_y],
+            [particleNew_vx, particleNew_vy]
+        ))
         
         drawImage.ellipse([(particles[j].x - 2, particles[j].y - 2),(particles[j].x + 2, particles[j].y + 2)], fill = "#FFFFFF", outline = "#FFFFFF")
         # drawImage.point((particles[j].x, particles[j].y), fill = "#FFFFFF")
@@ -97,9 +105,15 @@ for i in range(1,1000):
 
     
     frames.append(currentImage)
-    currentImage.save("Frames4/" + "{:03d}".format(i) + ".png", format = "PNG")
+    currentImage.save("D:/GravitySimulatorImages/4-Simulation2/" + "{:03d}".format(i) + ".png", format = "PNG")
     sys.stdout.write("\033[F")
-    print(i)
     
+    particles = []
+
+    for p in newParticles:
+        particles.append(p)
+    
+    print(i)
+
 # frames[0].save('Gravity.gif', format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
 

@@ -2,6 +2,10 @@
 
 This is a python program that simulates gravity between many particles. It outputs a folder of images which can be combined into a video.
 
+## Requirements
+
+This simulation uses Pillow (a variant of PIL) to create the images of the simulation.
+
 ## Specifying the Particles
 
 The particles are created using the class  `Particle` and have 3 parameters:
@@ -66,3 +70,4 @@ particles = [
 ```
 
 ![Alt Text](300_Particle_Simulation/Gravity.gif)
+

@@ -1,5 +1,6 @@
 import random
 import math
+import sys
 from PIL import Image, ImageDraw
 
 class Particle:
@@ -43,9 +44,11 @@ frames = []
 
 currentImage = Image.new("RGBA", (1000,1000), color="#000000")
 drawImage = ImageDraw.Draw(currentImage)
-dt = float(1)/float(1000)
+dt = float(1)/float(50)
 
-for i in range(1,1000):
+print(" ")
+
+for i in range(1,100000):
     drawImage.rectangle([(0, 0), (1001, 1001)], fill = "#000000")
 
     for j in range(1, len(particles)):
@@ -56,12 +59,12 @@ for i in range(1,1000):
                 delta_y = particles[k].y - particles[j].y
                 delta_r = math.sqrt( delta_x ** 2 + delta_y ** 2 )
                 try:
-                    accn[0] += float(100000 * (particles[k].m) * delta_x) / float(delta_r ** 3)
+                    accn[0] += float(10 * (particles[k].m) * delta_x) / float(delta_r ** 3)
                 except:
                     accn[0] += 0
 
                 try:
-                    accn[1] += float(100000 * (particles[k].m) * delta_y) / float(delta_r ** 3)
+                    accn[1] += float(10 * (particles[k].m) * delta_y) / float(delta_r ** 3)
                 except:
                     accn[1] += 0
 
@@ -89,7 +92,8 @@ for i in range(1,1000):
 
     
     frames.append(currentImage)
-    currentImage.save("Frames3/" + "{:03d}".format(i) + ".png", format = "PNG")
+    currentImage.save("Frames/" + "{:03d}".format(i) + ".png", format = "PNG")
+    sys.stdout.write("\033[F")
     print(i)
     
 # frames[0].save('Gravity.gif', format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
