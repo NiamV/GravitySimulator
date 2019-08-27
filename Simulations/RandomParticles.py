@@ -51,9 +51,11 @@ print(" ")
 for i in range(1,100000):
     drawImage.rectangle([(0, 0), (1001, 1001)], fill = "#000000")
 
-    for j in range(1, len(particles)):
+    newParticles = []
+
+    for j in range(0, len(particles)):
         accn = [0,0]
-        for k in range(1,len(particles)):
+        for k in range(0,len(particles)):
             if j != k:
                 delta_x = particles[k].x - particles[j].x
                 delta_y = particles[k].y - particles[j].y
@@ -70,12 +72,18 @@ for i in range(1,100000):
 
         
         x_accn = accn[0]
-        particles[j].x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
-        particles[j].vx = newVelocity(particles[j].vx, x_accn, dt)
+        particleNew_x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
+        particleNew_vx = newVelocity(particles[j].vx, x_accn, dt)
         
         y_accn = accn[1]
-        particles[j].y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
-        particles[j].vy = newVelocity(particles[j].vy, y_accn, dt)
+        particleNew_y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
+        particleNew_vy = newVelocity(particles[j].vy, y_accn, dt)
+
+        newParticles.append(Particle(
+            particles[j].m, 
+            [particleNew_x, particleNew_y],
+            [particleNew_vx, particleNew_vy]
+        ))
         
         # drawImage.ellipse([(particles[j].x - 2, particles[j].y - 2),(particles[j].x + 2, particles[j].y + 2)], fill = "#FFFFFF", outline = "#FFFFFF")
         drawImage.point((particles[j].x, particles[j].y), fill = "#FFFFFF")
@@ -94,6 +102,12 @@ for i in range(1,100000):
     frames.append(currentImage)
     currentImage.save("Frames/" + "{:03d}".format(i) + ".png", format = "PNG")
     sys.stdout.write("\033[F")
+    
+    particles = []
+
+    for p in newParticles:
+        particles.append(p)
+    
     print(i)
     
 # frames[0].save('Gravity.gif', format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)

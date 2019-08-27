@@ -48,16 +48,18 @@ currentImage = Image.new("RGBA", (1000,1000), color="#000000")
 drawImage = ImageDraw.Draw(currentImage)
 
 dt = float(1)/float(50)
-e = 1
+e = 0.8
 
 print(" ")
 
 for i in range(1,100000):
     drawImage.rectangle([(0, 0), (1001, 1001)], fill = "#000000")
 
-    for j in range(1, len(particles)):
+    newParticles = []
+
+    for j in range(0, len(particles)):
         accn = [0,0]
-        for k in range(1,len(particles)):
+        for k in range(0,len(particles)):
             if j != k:                
                 delta_x = particles[k].x - particles[j].x
                 delta_y = particles[k].y - particles[j].y
@@ -69,7 +71,7 @@ for i in range(1,100000):
                     vj = Vector(particles[j].vx, particles[j].vy)
                     vk = Vector(particles[k].vx, particles[k].vy)
 
-                    resultant_velocity = Collision(xj, xk, vj, vk, e)
+                    resultant_velocity = Collision(1, 1, xj, xk, vj, vk, e)
                     particles[j].vx = resultant_velocity.x
                     particles[j].vy = resultant_velocity.y
 
@@ -86,12 +88,18 @@ for i in range(1,100000):
 
         
         x_accn = accn[0]
-        particles[j].x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
-        particles[j].vx = newVelocity(particles[j].vx, x_accn, dt)
+        particleNew_x = newLocation(particles[j].x, particles[j].vx, x_accn, dt)
+        particleNew_vx = newVelocity(particles[j].vx, x_accn, dt)
         
         y_accn = accn[1]
-        particles[j].y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
-        particles[j].vy = newVelocity(particles[j].vy, y_accn, dt)
+        particleNew_y = newLocation(particles[j].y, particles[j].vy, y_accn, dt)
+        particleNew_vy = newVelocity(particles[j].vy, y_accn, dt)
+
+        newParticles.append(Particle(
+            particles[j].m, 
+            [particleNew_x, particleNew_y],
+            [particleNew_vx, particleNew_vy]
+        ))
         
         drawImage.ellipse([(particles[j].x - 1, particles[j].y - 1),(particles[j].x + 1, particles[j].y + 1)], fill = "#FFFFFF", outline = "#FFFFFF")
         # drawImage.point((particles[j].x, particles[j].y), fill = "#FFFFFF")
@@ -107,9 +115,15 @@ for i in range(1,100000):
         #     print(delta_x, x_accn, y_accn)
 
     
-    frames.append(currentImage)
+    # frames.append(currentImage)
     currentImage.save("D:/GravitySimulatorImages/CollisionsSimulation3/" + "{:03d}".format(i) + ".png", format = "PNG")
     sys.stdout.write("\033[F")
-    print(i)
+    
+    particles = []
+
+    for p in newParticles:
+        particles.append(p)
+    
+    print(i, len(particles))
     
 # frames[0].save('Gravity.gif', format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
